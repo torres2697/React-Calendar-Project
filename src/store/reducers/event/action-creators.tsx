@@ -35,6 +35,19 @@ export const EventActionCreators = {
       console.log(e);
     }
   },
+  deleteEvent: (deletedEvent: IEvent) => async (dispatch: AppDispatch) => {
+    try {
+      const events = localStorage.getItem("events") || "[]";
+      const json = JSON.parse(events) as IEvent[];
+      const filteredEvents = json.filter(
+        (event) => JSON.stringify(event) !== JSON.stringify(deletedEvent)
+      );
+      dispatch(EventActionCreators.setEvents(filteredEvents));
+      localStorage.setItem("events", JSON.stringify(filteredEvents));
+    } catch (e) {
+      console.log(e);
+    }
+  },
   fetchEvents: (username: string) => async (dispatch: AppDispatch) => {
     try {
       const events = localStorage.getItem("events") || "[]";

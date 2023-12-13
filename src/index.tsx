@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Provider store={store}>
-    <BrowserRouter basename="/React-Calendar-Project">
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </Provider>

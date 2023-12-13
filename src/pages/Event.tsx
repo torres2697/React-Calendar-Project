@@ -10,7 +10,7 @@ import { IEvent } from "../models/IEvent";
 
 const Event = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { fetchGuests, createEvent, fetchEvents } = useActions();
+  const { fetchGuests, createEvent, fetchEvents, deleteEvent } = useActions();
   const { guests, events } = useTypedSelector((state) => state.events);
   const { user } = useTypedSelector((state) => state.auth);
 
@@ -26,7 +26,7 @@ const Event = () => {
 
   return (
     <Layout>
-      <CalendarComponent events={events} />
+      <CalendarComponent events={events} deleteEvent={deleteEvent} />
       <Row justify="center">
         <Button onClick={() => setModalVisible(true)}>Add Event</Button>
       </Row>
