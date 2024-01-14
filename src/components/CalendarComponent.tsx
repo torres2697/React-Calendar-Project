@@ -2,6 +2,7 @@ import { Calendar } from "antd";
 import React from "react";
 import { IEvent } from "../models/IEvent";
 import type { Dayjs } from "dayjs";
+import { DeleteFilled  } from "@ant-design/icons";
 
 interface CalendarComponentProps {
   events: IEvent[];
@@ -19,8 +20,12 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     return (
       <div>
         {currentDayEvents.map((ev, index) => (
-          <div onClick={() => deleteEvent(ev)} key={index}>
-            {ev.description}{" "}
+          <div key={index} style={{ display: "flex", alignItems: "center" }}>
+            <div>{ev.description}</div>
+            <DeleteFilled 
+              style={{ marginLeft: "8px", cursor: "pointer" }}
+              onClick={() => deleteEvent(ev)}
+            />
           </div>
         ))}
       </div>

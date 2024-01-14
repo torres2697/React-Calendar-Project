@@ -18,7 +18,7 @@ export const EventActionCreators = {
     try {
       setTimeout(async () => {
         const guests = await UserService.getUsers();
-        dispatch(EventActionCreators.setGuests(guests.data));
+        dispatch(EventActionCreators.setGuests(guests));
       }, 1000);
     } catch (e) {
       console.log(e);
