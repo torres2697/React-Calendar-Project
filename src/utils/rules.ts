@@ -8,7 +8,11 @@ export const rules = {
   }),
   isDateAfter: (message: string) => () => ({
     validator(_: any, value: Dayjs) {
-      if (value.isSame(dayjs()) || value.isAfter(dayjs())) {
+      const selectedDate = dayjs(value).startOf("day");
+      if (
+        selectedDate.isSame(dayjs().startOf("day")) ||
+        selectedDate.isAfter(dayjs())
+      ) {
         return Promise.resolve();
       } else {
         return Promise.reject(new Error(message));
