@@ -28,7 +28,7 @@ export const AuthActionCreators = {
     payload: user,
   }),
   login:
-    (username: string, password: string, clearField: () => void) =>
+    (username: string, password: string, clearLoginFormFields: () => void) =>
     async (dispatch: AppDispatch) => {
       try {
         dispatch(AuthActionCreators.setIsLoading(true));
@@ -37,13 +37,13 @@ export const AuthActionCreators = {
           const mockUser = users.find(
             (user) => user.username === username && user.password === password
           );
-          console.log(users);
           if (mockUser) {
             localStorage.setItem("auth", "true");
             localStorage.setItem("username", mockUser.username);
             dispatch(AuthActionCreators.setUser(mockUser));
             dispatch(AuthActionCreators.setAuth(true));
             dispatch(AuthActionCreators.setError(""));
+            dispatch(AuthActionCreators.setIsLoading(false));
           } else {
             dispatch(
               AuthActionCreators.setError(
@@ -51,12 +51,10 @@ export const AuthActionCreators = {
               )
             );
           }
-          dispatch(AuthActionCreators.setIsLoading(false));
+          clearLoginFormFields();
         }, 1000);
       } catch (e) {
         dispatch(AuthActionCreators.setError("Authorization Error!"));
-      } finally {
-        clearField();
       }
     },
   logout: () => async (dispatch: AppDispatch) => {
@@ -65,41 +63,4 @@ export const AuthActionCreators = {
     dispatch(AuthActionCreators.setAuth(false));
     dispatch(AuthActionCreators.setUser({} as IUser));
   },
-  register:
-    (
-      username: string,
-      password: string,
-      passwordRepeat: string,
-      onSucessfulRegister: () => void
-    ) =>
-    async (dispatch: AppDispatch) => {
-      try {
-        dispatch(AuthActionCreators.setIsLoading(true));
-        setTimeout(async () => {
-          if (password !== passwordRepeat) {
-            dispatch(
-              AuthActionCreators.setError(
-                "Passwords do not match, please try again!"
-              )
-            );
-          } else {
-            const users = await UserService.getUsers();
-            const mockUser = users.find((user) => user.username === username);
-            if (mockUser) {
-              dispatch(
-                AuthActionCreators.setError("This user is already registered!")
-              );
-            } else {
-              UserService.createUser(username, password);
-              console.log(users);
-              onSucessfulRegister();
-              // dispatch(AuthActionCreators.setError(""));
-            }
-            dispatch(AuthActionCreators.setIsLoading(false));
-          }
-        }, 1000);
-      } catch (e) {
-        dispatch(AuthActionCreators.setError("Registration Error!"));
-      }
-    },
 };

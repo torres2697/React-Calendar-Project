@@ -13,35 +13,21 @@ const LoginFrom = () => {
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [modalRegisterVisible, setModalRegisterVisible] = useState(false);
-  const [modalSuccessRegisterVisible, setModalSuccessRegisterVisible] =
-    useState(false);
+
   const { login } = useActions();
 
   const [form] = useForm();
+
+  const clearLoginFormFields = () => {
+    form.setFieldsValue({ username: "", password: "" });
+  };
 
   const closeRegisterModal = () => {
     setModalRegisterVisible(false);
   };
 
-  const openSuccessRegisterModal = () => {
-    setModalSuccessRegisterVisible(true);
-  };
-
-  const closeSuccessRegisterModal = () => {
-    setModalSuccessRegisterVisible(false);
-  };
-
-  const handleSucessfulRegistration = () => {
-    closeRegisterModal();
-    openSuccessRegisterModal();
-  };
-
-  const clearField = () => {
-    form.setFieldsValue({ username: "", password: "" });
-  };
-
   const onFinish = () => {
-    login(userName, userPassword, clearField);
+    login(userName, userPassword, clearLoginFormFields);
   };
 
   return (
@@ -86,25 +72,7 @@ const LoginFrom = () => {
             title="Registration Form"
             open={modalRegisterVisible}
           >
-            <RegisterForm onSucessfulRegister={handleSucessfulRegistration} />
-          </Modal>
-          <Modal
-            onCancel={closeSuccessRegisterModal}
-            footer={null}
-            title=""
-            open={modalSuccessRegisterVisible}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <div style={{ fontSize: "24px", padding: "60px 0" }}>
-                You have successfully registered!
-              </div>
-            </div>
+            <RegisterForm closeRegisterModal={closeRegisterModal} />
           </Modal>
         </Form.Item>
       </Form>
